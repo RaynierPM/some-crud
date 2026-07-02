@@ -48,20 +48,14 @@ class InMemoryStore
         List<Note> filteredNotes = [];
 
         List<Note> notes = processFilters(filters);
-        
-        Console.WriteLine("Stop index: {0}", stopIndex);
-        Console.WriteLine("Items: {0}", notes.Count);
 
         for (int i = offset; i < notes.Count; i++)
         {
             Note item = notes[i];
             filteredNotes.Add(item);
 
-            Console.WriteLine(item);
-            Console.WriteLine("Index: ", i);
             if (i+1 > stopIndex) { break; }
         }
-        Console.WriteLine("Notes: {0}, length: {1}", filteredNotes, filteredNotes.Count);
         return filteredNotes;
     }
 
@@ -88,12 +82,12 @@ class InMemoryStore
     }
 
 
-    private int getOffset(IPaginationFilters filters)
+    private int getOffset(PaginationFilters filters)
     {
         return (filters.Page-1)*filters.Size;
     }
 
-    private int getStopIndex(IPaginationFilters filters)
+    private int getStopIndex(PaginationFilters filters)
     {
         var offset = getOffset(filters);
         return offset + filters.Size;
@@ -109,16 +103,21 @@ class InMemoryStore
         }
 
         foreach (var item in _notes.Values.ToList())
-        {
-            if (filters.Title != null && item.title.Contains(filters.Title))
-            {
-                notes.Append(item);
+        {   
+            int activeFilters = 0;
+            int passedFilters = 0;
+            if (filters.Title != null)
+            {   
+                activeFilters++;
+                if (item.title.ToLower().Contains(filters.Title.ToLower())) passedFilters++;
             }
 
-            if (filters.Date != null && item.createdAt == filters.Date)
+            if (filters.Date != null)
             {
-                notes.Append(item);
+                activeFilters++;
+                if (item.createdAt == filters.Date) passedFilters++;
             }
+            if (activeFilters == passedFilters) notes.Add(item);
         }
         return notes;
     }

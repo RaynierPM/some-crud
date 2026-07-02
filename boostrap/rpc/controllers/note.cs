@@ -8,13 +8,16 @@ namespace someCrud.bootstrap.rpc.controllers;
 
 [ApiController]
 [Route("/")]
-public class NoteController (NoteService noteService) : ControllerBase
+public class NoteController (NoteService noteService, ILogger<NoteController> logger) : ControllerBase
 {
-    private NoteService _noteService = noteService;
+    private readonly NoteService _noteService = noteService;
+
+    private readonly ILogger<NoteController> _logger = logger;
 
     [HttpGet("{id}")]
     public IActionResult getNote(int id)
     {
+        _logger.LogInformation("Route [Get-One note], retrieving id: {id}", id);
         Note? note = _noteService.getOne(id);
         if (note == null)
         {
@@ -33,7 +36,7 @@ public class NoteController (NoteService noteService) : ControllerBase
     [HttpGet]
     public IActionResult GetNotes([FromQuery] NoteFiltersDto filters)
     {
-        Console.WriteLine(filters);
+        _logger.LogInformation("Route [Get-All], retrieving filters: {filters}", filters);
         var response = _noteService.getAll(filters);
         return Ok(response);
     }
