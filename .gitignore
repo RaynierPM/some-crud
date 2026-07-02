@@ -480,3 +480,9 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+#build folder
+out
+
+#data folder (sqlite, etc)
+data
