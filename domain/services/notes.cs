@@ -14,19 +14,19 @@ public class NoteService {
 
     private INoteRepository _noteRepository;
 
-    public Note create(CreateNoteDto note) { 
+    public async Task<Note> create(CreateNoteDto note) { 
         Note newNote = new Note
         {
             body = note.Body,
             title = note.Title
         };
-        return _noteRepository.create(newNote);
+        return await _noteRepository.create(newNote);
     }
-    public Note? getOne(int id) { return _noteRepository.get(id);}
-    public PaginationBase<Note> getAll(NoteFiltersDto filters)
+    public async Task<Note?> getOne(int id) { return await _noteRepository.get(id);}
+    public async Task<PaginationBase<Note>> getAll(NoteFiltersDto filters)
     {
-        return _noteRepository.getAll(filters);
+        return await _noteRepository.getAll(filters);
     }
-    public bool update(int id, Note note) { return _noteRepository.update(id, note) != null; }
-    public bool delete(int id) { return _noteRepository.delete(id); }
+    public async Task<bool> update(int id, Note note) { return await _noteRepository.update(id, note) != null; }
+    public async Task<bool> delete(int id) { return await _noteRepository.delete(id); }
 }

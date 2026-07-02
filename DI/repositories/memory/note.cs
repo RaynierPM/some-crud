@@ -14,23 +14,23 @@ public class InMemoryNoteRepository : INoteRepository
 
     private readonly InMemoryStoreWrapper storeWrapper;
 
-    public Note create(Note note)
+    public async Task<Note> create(Note note)
     {
         var newNote = storeWrapper.store.addNote(note);
         return newNote;
     }
 
-    public bool delete(int id)
+    public async Task<bool> delete(int id)
     {
         return storeWrapper.store.DeleleNote(id);
     }
 
-    public Note? get(int id)
+    public async Task<Note?> get(int id)
     {
         return storeWrapper.store.getNote(id);
     }
 
-    public PaginationBase<Note> getAll(NoteFiltersDto filters)
+    public async Task<PaginationBase<Note>> getAll(NoteFiltersDto filters)
     {
 
         var notes =  storeWrapper.store.GetNotes(filters);
@@ -45,7 +45,7 @@ public class InMemoryNoteRepository : INoteRepository
         };
     }
 
-    public Note? update(int id, Note note)
+    public async Task<Note?> update(int id, Note note)
     {   
         note.updatedAt = DateTime.Now;
         if (storeWrapper.store.update(id, note))

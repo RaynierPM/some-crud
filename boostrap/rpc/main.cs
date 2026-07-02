@@ -1,6 +1,9 @@
 using someCrud.DI.repositories.memory;
 using someCrud.DI.repositories;
 using someCrud.domain.services;
+using Microsoft.EntityFrameworkCore;
+using someCrud.configuration;
+using someCrud.DI.repositories.sql;
 
 namespace someCrud.bootstrap.rpc;
 
@@ -32,7 +35,18 @@ public class AppWrapper
         builder.Services.AddControllers();
 
         builder.Services.AddScoped<NoteService>();
-        builder.Services.AddScoped<INoteRepository, InMemoryNoteRepository>();
+        builder.Services.AddScoped<INoteRepository, SqlNoteRepository>();
+
+        builder.Services.AddDbContext<AppDbContext>(options =>
+        {
+            options.UseSqlite(
+                builder.Configuration.GetConnectionString("database")
+            );
+        });
+
+        Console.WriteLine(builder.Configuration.GetConnectionString("database"));
+
+        builder.Services.AddAutoMapper(cfg => {}, typeof(NoteProfile));
         
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();

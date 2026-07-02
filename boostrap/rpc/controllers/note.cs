@@ -15,10 +15,10 @@ public class NoteController (NoteService noteService, ILogger<NoteController> lo
     private readonly ILogger<NoteController> _logger = logger;
 
     [HttpGet("{id}")]
-    public IActionResult getNote(int id)
+    public async Task<IActionResult> getNote(int id)
     {
         _logger.LogInformation("Route [Get-One note], retrieving id: {id}", id);
-        Note? note = _noteService.getOne(id);
+        Note? note = await _noteService.getOne(id);
         if (note == null)
         {
             return NotFound(new CommonErrorResponse
@@ -34,24 +34,24 @@ public class NoteController (NoteService noteService, ILogger<NoteController> lo
     }
 
     [HttpGet]
-    public IActionResult GetNotes([FromQuery] NoteFiltersDto filters)
+    public async Task<IActionResult> GetNotes([FromQuery] NoteFiltersDto filters)
     {
         _logger.LogInformation("Route [Get-All], retrieving filters: {filters}", filters);
-        var response = _noteService.getAll(filters);
+        var response = await _noteService.getAll(filters);
         return Ok(response);
     }
 
     [HttpPost]
-    public IActionResult CreateNote([FromBody] CreateNoteDto body)
+    public async Task<IActionResult> CreateNote([FromBody] CreateNoteDto body)
     {
-        var newNote = _noteService.create(body);
+        var newNote = await _noteService.create(body);
         return Ok(new CommonResponse{response = newNote});
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateNote(int id, [FromBody] CreateNoteDto body)
+    public async Task<IActionResult> UpdateNote(int id, [FromBody] CreateNoteDto body)
     {
-        var note = _noteService.getOne(id);
+        var note = await _noteService.getOne(id);
         if (note == null)
         {
             return NotFound(new CommonErrorResponse
@@ -63,7 +63,7 @@ public class NoteController (NoteService noteService, ILogger<NoteController> lo
         note.body = body.Body;
         note.title = body.Title;
 
-        if (!_noteService.update(id, note))
+        if (!await _noteService.update(id, note))
         {
             return BadRequest(new CommonErrorResponse
             {
@@ -75,9 +75,9 @@ public class NoteController (NoteService noteService, ILogger<NoteController> lo
     }
 
     [HttpDelete("{id}")]
-    public IActionResult UpdateNote(int id)
+    public async Task<IActionResult> UpdateNote(int id)
     {
-        var note = _noteService.getOne(id);
+        var note = await _noteService.getOne(id);
         if (note == null)
         {
             return NotFound(new CommonErrorResponse
@@ -86,7 +86,7 @@ public class NoteController (NoteService noteService, ILogger<NoteController> lo
             });
         } 
 
-        if (!_noteService.delete(id))
+        if (!await _noteService.delete(id))
         {
             return BadRequest(new CommonErrorResponse
             {
