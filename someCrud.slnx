@@ -1,2 +1,6 @@
 <Solution>
+  <Folder Name="/some-crud.webApi/">
+    <Project Path="some-crud.webApi/someCrud.csproj" />
+  </Folder>
+  <Project Path="some-crud.Tests/some-crud.Tests.csproj" />
 </Solution>
