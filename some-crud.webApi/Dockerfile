@@ -5,6 +5,9 @@ COPY . ./
 
 RUN dotnet restore
 
+RUN dotnet tool restore
+RUN dotnet ef database update
+
 RUN dotnet publish -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 as runtime
