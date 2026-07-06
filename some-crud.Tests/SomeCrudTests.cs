@@ -120,10 +120,13 @@ public class NoteServicesTest
 
         var createdNote = await noteService.create(noteDto);
 
-        createdNote.title = newTitle;
-        createdNote.body = newBody;
+        var updateNoteDto = new UpdateNoteDto
+        {
+            Body = newBody,
+            Title = newTitle,
+        };
 
-        var result = await noteService.update(createdNote.id, createdNote);
+        var result = await noteService.update(createdNote.id, updateNoteDto);
 
         var updatedNote = await noteService.getOne(createdNote.id);
 
@@ -147,10 +150,14 @@ public class NoteServicesTest
 
         var createdNote = await noteService.create(noteDto);
 
-        createdNote.title = newTitle;
-        createdNote.body = newBody;
+        var updateNoteDto = new UpdateNoteDto
+        {
+            Body = newBody,
+            Title = newTitle,
+        };
 
-        var result = await noteService.update(1000, createdNote);
+        var result = await noteService.update(1000, updateNoteDto);
+        
         var updatedNote = await noteService.getOne(createdNote.id);
 
         result.Should().Be(false);

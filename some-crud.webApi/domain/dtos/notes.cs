@@ -6,6 +6,8 @@ public class CreateNoteDto
     public required string Body {get; set; }
 }
 
+public class UpdateNoteDto : CreateNoteDto {}
+
 public class NoteFiltersDto : PaginationFilters, IDateFilters
 {
     public DateTime? Date { get; set; }

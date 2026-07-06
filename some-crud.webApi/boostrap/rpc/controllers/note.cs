@@ -49,7 +49,7 @@ public class NoteController (NoteService noteService, ILogger<NoteController> lo
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateNote(int id, [FromBody] CreateNoteDto body)
+    public async Task<IActionResult> UpdateNote(int id, [FromBody] UpdateNoteDto body)
     {
         var note = await _noteService.getOne(id);
         if (note == null)
@@ -60,10 +60,7 @@ public class NoteController (NoteService noteService, ILogger<NoteController> lo
             });
         } 
 
-        note.body = body.Body;
-        note.title = body.Title;
-
-        if (!await _noteService.update(id, note))
+        if (!await _noteService.update(id, body))
         {
             return BadRequest(new CommonErrorResponse
             {

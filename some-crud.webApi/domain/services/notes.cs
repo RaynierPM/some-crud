@@ -27,6 +27,6 @@ public class NoteService {
     {
         return await _noteRepository.getAll(filters);
     }
-    public async Task<bool> update(int id, Note note) { return await _noteRepository.update(id, note) != null; }
+    public async Task<bool> update(int id, CreateNoteDto note) { return await _noteRepository.update(id, new Note{id=id, body=note.Body, title=note.Title}) != null; }
     public async Task<bool> delete(int id) { return await _noteRepository.delete(id); }
 }
