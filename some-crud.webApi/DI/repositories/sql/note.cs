@@ -1,5 +1,4 @@
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using someCrud.configuration;
 using someCrud.DI.models;
@@ -40,6 +39,9 @@ public class SqlNoteRepository(AppDbContext context, IMapper mapper) : INoteRepo
     public async Task<Note?> get(int id)
     {
         NoteEntity? entity = await _context.Notes.FindAsync(id);
+
+        if  (entity == null) return null;
+         
         Note? note = _mapper.Map<Note?>(entity);
         return note;
     }

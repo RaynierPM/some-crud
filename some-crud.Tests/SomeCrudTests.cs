@@ -1,4 +1,3 @@
-using Xunit;
 using FluentAssertions;
 using someCrud.domain.services;
 using someCrud.DI.repositories;
@@ -8,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using someCrud.configuration;
 using someCrud.domain.dtos;
 using someCrud.DI.repositories.sql;
-using AutoMapper;
-using Microsoft.Extensions.Logging.Abstractions;
-using FakeItEasy.Sdk;
+using Mapster;
+using MapsterMapper;
+using someCrud.DI.models;
 
 namespace someCrud.tests;
 
@@ -38,12 +37,12 @@ public class NoteServicesTest
 
     private IMapper getMapper()
     {
-        var config = new MapperConfiguration(cfg =>
-        {
-            cfg.AddProfile(typeof(NoteProfile));
-        }, NullLoggerFactory.Instance);
+        var config = TypeAdapterConfig.GlobalSettings;
 
-        return config.CreateMapper();
+        config.NewConfig<Note, NoteEntity>();
+        config.NewConfig<NoteEntity, Note>();
+
+        return new Mapper(config);
     }
 
     private async Task<NoteService> getNoteService()

@@ -68,6 +68,8 @@ public class NoteController (NoteService noteService, ILogger<NoteController> lo
             });
         } 
 
+        note = await _noteService.getOne(id);
+
         return Ok(note);
     }
 

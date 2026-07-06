@@ -1,9 +1,12 @@
-using someCrud.DI.repositories.memory;
 using someCrud.DI.repositories;
 using someCrud.domain.services;
 using Microsoft.EntityFrameworkCore;
 using someCrud.configuration;
 using someCrud.DI.repositories.sql;
+using Mapster;
+using someCrud.domain.models;
+using someCrud.DI.models;
+using MapsterMapper;
 
 namespace someCrud.bootstrap.rpc;
 
@@ -44,10 +47,14 @@ public class AppWrapper
             );
         });
 
-        Console.WriteLine(builder.Configuration.GetConnectionString("database"));
+        var config = TypeAdapterConfig.GlobalSettings;
 
-        builder.Services.AddAutoMapper(cfg => {}, typeof(NoteProfile));
-        
+        config.NewConfig<Note, NoteEntity>();
+        config.NewConfig<NoteEntity, Note>();
+
+        builder.Services.AddSingleton(config);
+        builder.Services.AddScoped<IMapper, ServiceMapper>();
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
