@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 as builder
 WORKDIR /app
 
-COPY . ./
+COPY ./some-crud.webApi ./
 
 RUN dotnet restore
 

@@ -36,14 +36,7 @@ ConnectionStrings__DefaultConnection="Server=localhost;Database=SomeCrud;User Id
 
 ```bash
 dotnet restore
-```
-
-## Install Entity Framework CLI (optional)
-
-If you don't already have it:
-
-```bash
-dotnet tool install --global dotnet-ef
+dotnet tool restore
 ```
 
 ## Apply database migrations
@@ -55,7 +48,7 @@ dotnet ef database update
 ## Run the application
 
 ```bash
-dotnet run
+dotnet run --project some-crud.webApi
 ```
 
 The API will start on the configured ports.
@@ -67,7 +60,7 @@ The API will start on the configured ports.
 ## Build the image
 
 ```bash
-docker build -t somecrud .
+docker build -t some-crud .
 ```
 
 ## Run the container
@@ -75,7 +68,7 @@ docker build -t somecrud .
 ```bash
 docker run \
     -p 8080:8080 \
-    -e ConnectionStrings__database="Server=<server>;"
-    somecrud
+    -e ConnectionStrings__database="Data_Source=data/database.sql;"
+    some-crud
 ```
 ---
