@@ -58,7 +58,9 @@ public class SqlNoteRepository(AppDbContext context, IMapper mapper) : INoteRepo
         {
             query.Where(q => q.title.ToLower().Contains(filters.Title.ToLower()));
         }
-        
+
+        var count = await query.CountAsync();
+
         query.Take(filters.Size);
         query.Skip(PaginationHelper.GetOffset(filters));
         query.OrderBy(q => q.createdAt);
@@ -69,7 +71,8 @@ public class SqlNoteRepository(AppDbContext context, IMapper mapper) : INoteRepo
         {
             items = notes,
             page = filters.Page,
-            size = filters.Size
+            size = filters.Size,
+            total_items = count
         };
     }
 

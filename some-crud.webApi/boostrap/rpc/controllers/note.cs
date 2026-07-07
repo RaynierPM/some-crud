@@ -7,7 +7,7 @@ using someCrud.domain.services;
 namespace someCrud.bootstrap.rpc.controllers;
 
 [ApiController]
-[Route("/")]
+[Route("/notes")]
 public class NoteController (NoteService noteService, ILogger<NoteController> logger) : ControllerBase
 {
     private readonly NoteService _noteService = noteService;
