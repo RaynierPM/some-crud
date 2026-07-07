@@ -63,12 +63,19 @@ The API will start on the configured ports.
 docker build -t some-crud .
 ```
 
+## Build a volume
+```bash
+docker volume create some-crud-data
+```
+
+
 ## Run the container
 
 ```bash
 docker run \
     -p 8080:8080 \
-    -e ConnectionStrings__database="Data_Source=data/database.sql;"
+    -e ConnectionStrings__database="Data Source=/app/data/database.sql;" \
+    -v some-crud-data:/app/data \
     some-crud
 ```
 ---
